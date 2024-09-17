@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcadex07 - Enviar Recibo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        header {
+            background-color: #343a40;
+            color: #fff;
+            padding: 15px 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo h1 {
+            margin: 0;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: space-around;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .receipt-upload {
+            padding: 40px 0;
+            text-align: center;
+            background-color: #f8f9fa;
+        }
+        .receipt-upload h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .receipt-upload p {
+            font-size: 18px;
+            color: #555;
+        }
+        .receipt-upload form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        .receipt-upload label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .receipt-upload input[type="email"],
+        .receipt-upload input[type="file"],
+        .receipt-upload button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        .receipt-upload button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .receipt-upload button:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .footer-contact p, .footer-social a {
+            margin: 5px 0;
+        }
+        .footer-social a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .newsletter form {
+            display: flex;
+            justify-content: center;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Arcadex07</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="productos.html">Productos</a></li>
+                    <li><a href="ofertas.html">Cheteos Arcadex07🔥🔥</a></li>
+                    <li><a href="consejos.html">Consejos de Juegos</a></li>
+                    <li><a href="nosotros.html">Sobre Nosotros</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                    <li><a href="#" class="cart-icon">🛒</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="receipt-upload">
+        <div class="container">
+            <h2>Enviar Recibo de Pago</h2>
+            <p>Por favor, sube una foto del recibo de pago y proporciona cualquier comentario adicional.</p>
+            <form id="payment-form" enctype="multipart/form-data">
+                <label>
+                    Tu correo electrónico:
+                    <input type="email" name="email" required>
+                </label>
+                <label>
+                    Foto del Recibo:
+                    <input type="file" name="upload" accept="image/*" required>
+                </label>
+                <button type="button" onclick="sendPaymentDetails()">Enviar Recibo</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="privacy.html">Política de Privacidad</a>
+                <a href="terms.html">Términos y Condiciones</a>
+                <a href="returns.html">Política de Devoluciones</a>
+            </div>
+            <div class="footer-contact">
+                <p>Dirección: Calle Ficticia 123, Ciudad, País</p>
+                <p>Teléfono: +123 456 789</p>
+                <p>Email: <a href="mailto:info@Arcadex07.com">info@Arcadex07.com</a></p>
+            </div>
+            <div class="footer-social">
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">Twitter</a>
+            </div>
+            <div class="newsletter">
+                <h3>Suscríbete al Boletín</h3>
+                <form>
+                    <input type="email" placeholder="Tu correo electrónico">
+                    <button type="submit">Suscribirse</button>
+                </form>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function sendPaymentDetails() {
+            var formData = new FormData(document.getElementById('payment-form'));
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('POST', 'http://localhost:3000/upload', true); // Asegúrate de que esta URL es correcta
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Aquí se puede construir el mensaje para WhatsApp
+                    var email = document.querySelector('input[name="email"]').value;
+                    var message = `Recibo de pago enviado desde Arcadex07\nCorreo: ${email}`;
+                    var phoneNumber = '6183280339'; // Reemplaza con el número de WhatsApp destino
+                    var encodedMessage = encodeURIComponent(message);
+                    var whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+                    // Redirigir al usuario a WhatsApp con el mensaje
+                    window.open(whatsappURL, '_blank');
+
+                    alert('Recibo enviado correctamente.');
+                    document.getElementById('payment-form').reset();
+                } else {
+                    alert('Hubo un problema al enviar el recibo.');
+                }
+            };
+
+            xhr.onerror = function() {
+                alert('Error de red. Por favor, revisa tu conexión.');
+            };
+
+            xhr.send(formData);
+        }
+    </script>
+</body>
+</html>
