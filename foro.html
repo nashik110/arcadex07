@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foro de Preguntas y Respuestas</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .question-section { margin-top: 20px; }
+        .question { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
+        .question-form, .answer-form { margin-top: 20px; }
+        .like-button { cursor: pointer; color: blue; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Arcadex07</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="productos.html">Productos</a></li>
+                    <li><a href="ofertas.html">Cheteos Arcadex07🔥🔥</a></li>
+                    <li><a href="consejos.html">Consejos de Juegos</a></li>
+                    <li><a href="nosotros.html">Sobre Nosotros</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                    <li><a href="foro.html">Foro de Preguntas y Respuestas</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <h1>Foro de Preguntas y Respuestas</h1>
+
+    <div class="question-section" id="questions">
+        <!-- Las preguntas se agregarán aquí -->
+    </div>
+
+    <div class="question-form">
+        <h2>Hacer una Pregunta</h2>
+        <input type="text" id="question" placeholder="Escribe tu pregunta..." required>
+        <input type="text" id="username" placeholder="Tu usuario de Discord" required>
+        <button onclick="addQuestion()">Publicar Pregunta</button>
+    </div>
+
+    <script>
+        const questions = [];
+
+        function addQuestion() {
+            const questionText = document.getElementById('question').value;
+            const username = document.getElementById('username').value;
+
+            if (questionText && username) {
+                const questionId = questions.length;
+                const question = { id: questionId, text: questionText, username: username, likes: 0, answers: [] };
+                questions.push(question);
+                document.getElementById('question').value = '';
+                document.getElementById('username').value = '';
+                displayQuestions();
+            } else {
+                alert('Por favor, completa todos los campos.');
+            }
+        }
+
+        function displayQuestions() {
+            const questionsDiv = document.getElementById('questions');
+            questionsDiv.innerHTML = '';
+            questions.forEach(q => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+                questionDiv.innerHTML = `
+                    <strong>${q.username}</strong>: ${q.text}
+                    <span class="like-button" onclick="likeQuestion(${q.id})">👍 ${q.likes}</span>
+                    <div class="answer-form">
+                        <input type="text" placeholder="Tu respuesta...">
+                        <button onclick="addAnswer(${q.id}, this.previousElementSibling.value)">Responder</button>
+                    </div>
+                    <div class="answers" id="answers-${q.id}"></div>
+                `;
+                questionsDiv.appendChild(questionDiv);
+                q.answers.forEach(answer => {
+                    const answerDiv = document.createElement('div');
+                    answerDiv.innerHTML = `<strong>${answer.username}</strong>: ${answer.text}`;
+                    document.getElementById(`answers-${q.id}`).appendChild(answerDiv);
+                });
+            });
+        }
+
+        function likeQuestion(id) {
+            questions[id].likes++;
+            displayQuestions();
+        }
+
+        function addAnswer(questionId, answerText) {
+            if (answerText) {
+                const username = prompt("Ingresa tu usuario de Discord:");
+                const answer = { username: username, text: answerText };
+                questions[questionId].answers.push(answer);
+                displayQuestions();
+            } else {
+                alert('Por favor, escribe una respuesta.');
+            }
+        }
+    </script>
+</body>
+</html>
