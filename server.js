@@ -1,47 +1,58 @@
 const express = require('express');
-const nodemailer = require('nodemailer');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+
 const app = express();
-const port = 3001; // O el puerto que elijas
+const PORT = process.env.PORT || 5000;
 
-// Configuración de nodemailer
-const transporter = nodemailer.createTransport({
-    service: 'gmail', // Puedes usar el servicio que prefieras
-    auth: {
-        user: 'nashmzdgo@gmail.com', // Reemplaza con tu correo electrónico
-        pass: 'osopardo21R'   // Reemplaza con tu contraseña de correo
-    }
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
+
+// Conectar a MongoDB
+mongoose.connect('mongodb://localhost:27017/foroArcadex07', { useNewUrlParser: true, useUnifiedTopology: true });
+
+// Definir el esquema de preguntas
+const questionSchema = new mongoose.Schema({
+    text: String,
+    username: String,
+    likes: { type: Number, default: 0 },
+    answers: [{ username: String, text: String }]
 });
 
-// Middleware para analizar el cuerpo de las solicitudes
-app.use(bodyParser.urlencoded({ extended: true }));
+const Question = mongoose.model('Question', questionSchema);
 
-// Ruta para manejar el envío de tickets
-app.post('/tickets', (req, res) => {
-    const { name, email, message } = req.body;
-
-    const mailOptions = {
-        from: email,
-        to: 'support@gamehub.com', // Reemplaza con el correo electrónico de soporte
-        subject: 'Nuevo Ticket de Soporte',
-        text: `Nombre: ${name}\nCorreo Electrónico: ${email}\n\nMensaje:\n${message}`
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Error al enviar el correo:', error);
-            res.status(500).send('Error al enviar el ticket. Inténtalo de nuevo más tarde.');
-        } else {
-            console.log('Correo enviado:', info.response);
-            res.status(200).send('Ticket enviado correctamente.');
-        }
-    });
+// Obtener todas las preguntas
+app.get('/questions', async (req, res) => {
+    const questions = await Question.find();
+    res.json(questions);
 });
 
-// Servir archivos estáticos (si es necesario)
-app.use(express.static('public'));
+// Crear una nueva pregunta
+app.post('/questions', async (req, res) => {
+    const question = new Question(req.body);
+    await question.save();
+    res.status(201).json(question);
+});
+
+// Incrementar el like
+app.post('/questions/:id/like', async (req, res) => {
+    const question = await Question.findById(req.params.id);
+    question.likes++;
+    await question.save();
+    res.json(question);
+});
+
+// Agregar una respuesta
+app.post('/questions/:id/answers', async (req, res) => {
+    const question = await Question.findById(req.params.id);
+    question.answers.push(req.body);
+    await question.save();
+    res.json(question);
+});
 
 // Iniciar el servidor
-app.listen(port, () => {
-    console.log(`Servidor escuchando en http://localhost:${port}`);
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

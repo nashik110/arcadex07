@@ -3,24 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arcadex07 - Gracias</title>
+    <title>Arcadex07 - Tutorial de Instalación</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        .thank-you {
+        /* Estilos para el video tutorial */
+        .tutorial-section {
             padding: 40px 0;
-            text-align: center;
             background-color: #f8f9fa;
+            text-align: center;
         }
 
-        .thank-you h2 {
+        .tutorial-section h2 {
             font-size: 36px;
             margin-bottom: 20px;
             color: #333;
         }
 
-        .thank-you p {
-            font-size: 18px;
-            color: #555;
+        .tutorial-video {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .tutorial-video iframe {
+            width: 100%;
+            height: 450px;
+            border: none;
+            border-radius: 8px;
         }
     </style>
 </head>
@@ -33,22 +41,19 @@
             <nav>
                 <ul>
                     <li><a href="index.html">Inicio</a></li>
-                    <li><a href="productos.html">Productos</a></li>
-                    <li><a href="ofertas.html">Cheteos Arcadex07🔥🔥</a></li>
+                    <li><a href="tutorial.html">Tutorial de Instalación</a></li>
                     <li><a href="consejos.html">Consejos de Juegos</a></li>
                     <li><a href="nosotros.html">Sobre Nosotros</a></li>
                     <li><a href="contacto.html">Contacto</a></li>
-                    <li><a href="#" class="cart-icon">🛒</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <section class="thank-you">
-        <div class="container">
-            <h2>¡Gracias por tu Compra!</h2>
-            <p>Hemos recibido tu información de pago. Procesaremos tu solicitud y te enviaremos una confirmación pronto.</p>
-            <p><a href="index.html">Volver a la Página de Inicio</a></p>
+    <section id="tutorial" class="tutorial-section">
+        <h2>Tutorial de Instalación</h2>
+        <div class="tutorial-video">
+            <iframe src="Tutorial_Outfits1_1.mp4" allowfullscreen></iframe>
         </div>
     </section>
 
@@ -67,7 +72,8 @@
             <div class="footer-social">
                 <a href="#">Facebook</a>
                 <a href="#">Instagram</a>
-                <a href="#">Twitter</a></div>
+                <a href="#">Twitter</a>
+            </div>
             <div class="newsletter">
                 <h3>Suscríbete al Boletín</h3>
                 <form>
